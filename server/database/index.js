@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 
 // Connect to the database
-mongoose.connect('mongodb://localhost/mvp', {
+mongoose.connect('mongodb://127.0.0.1:27017/mvp', {
   useNewUrlParser: true,
   useUnifiedTopology: true
-});
+}).then(() => {
+  console.log('Database Connected!');
+}
+).catch((err) => { console.log(err); });
 
 // Create a Schema to store information
 const accountSchema = new mongoose.Schema({
@@ -19,6 +22,7 @@ const Account = mongoose.model('Account', accountSchema);
 
 // Use this to save new data points to the mongo database
 let save = (data) => {
+  console.log(data);
   var user = data.userName;
   var pass = data.password;
   var email = data.email;
