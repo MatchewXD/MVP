@@ -22,7 +22,6 @@ const Account = mongoose.model('Account', accountSchema);
 
 // Use this to save new data points to the mongo database
 let save = (data) => {
-  console.log(data);
   var user = data.userName;
   var pass = data.password;
   var email = data.email;
@@ -33,16 +32,47 @@ let save = (data) => {
 
 // Use this when getting all info from the database
 let get = (callback) => {
-  console.log('Starting get request');
   const account = Account.find({}).exec((err, data) => {
     if (err) {
       console.log('ERROR: could not Get data from database');
     } else {
-      console.log('Get request finished');
       callback(data);
+    }
+  });
+}
+
+let update = (data) => {
+  Account.findById(data._id, (err, results) => {
+    if (err) {
+      console.log(err);
+    } else {
+      results.userName = data.userName ? data.userName : results.userName;
+      results.password = data.password ? data.password : results.password;
+      results.email = data.email ? data.email : results.email;
+      results.displayName = data.displayName ? data.displayName : results.displayName;
+      results.save((err, updatedRecord) => {
+        if (err) {
+          console.log(err);
+        } else {
+          // console.log("This is the new updated Record", updatedRecord);
+          console.log("Record Updated");
+        }
+      });
+    }
+  });
+}
+
+let remove = (id) => {
+  Account.deleteOne({ _id: id }, (err, _) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('The account has been deleted');
     }
   });
 }
 
 module.exports.save = save;
 module.exports.get = get;
+module.exports.update = update;
+module.exports.remove = remove;
