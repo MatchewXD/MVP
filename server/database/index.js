@@ -20,6 +20,16 @@ const accountSchema = new mongoose.Schema({
 // Compile the schema into a model
 const Account = mongoose.model('Account', accountSchema);
 
+const habitSchema = new mongoose.Schema({
+  name: String,
+  score: Number,
+  streak: Number,
+  highestStreak: Number,
+  entries: String
+});
+
+const Habit = mongoose.model('Habit', habitSchema);
+
 // Use this to save new data points to the mongo database
 let save = (data) => {
   var user = data.userName;
@@ -72,7 +82,15 @@ let remove = (id) => {
   });
 }
 
-module.exports.save = save;
-module.exports.get = get;
-module.exports.update = update;
-module.exports.remove = remove;
+// module.exports.save = save;
+// module.exports.get = get;
+// module.exports.update = update;
+// module.exports.remove = remove;
+// module.exports.Habit = Habit;
+module.exports = {
+  save: save,
+  get: get,
+  update: update,
+  remove: remove,
+  "Habit": Habit
+}
