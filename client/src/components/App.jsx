@@ -1,4 +1,4 @@
-// This is the primary component of the react app
+// This is the primary component of the react app Test/
 import React from 'react';
 
 class App extends React.Component {
