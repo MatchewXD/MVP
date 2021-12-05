@@ -66,7 +66,7 @@ app.put('/habits', (req, res) => {
 });
 
 app.put('/habits/add', (req, res) => {
-  // console.log('Add Request Recieved');
+  console.log('Add Request Recieved');
   habits.updateHabit(req.body);
   res.send('Add Request Recieved');
 });
