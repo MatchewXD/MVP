@@ -16,6 +16,7 @@ class App extends React.Component {
     this.changeInput = this.changeInput.bind(this);
     this.habitSubmit = this.habitSubmit.bind(this);
     this.deleteHabit = this.deleteHabit.bind(this);
+    this.addScore = this.addScore.bind(this);
   }
 
   componentDidMount() {
@@ -33,12 +34,64 @@ class App extends React.Component {
       });
   }
 
+  addScore(event) {
+    var id = event.target.parentElement.id;
+    var score = Number(event.target.parentElement.attributes.score.value);
+    var streak = Number(event.target.parentElement.attributes.streak.value);
+    // console.log(`The score is: ${score}\nThe id is: ${id}\nThe streak is: ${streak}`);
+    // console.log(typeof (score), typeof (streak));
+    if (streak < 3) {
+      // console.log('Adding 1');
+      score += 1;
+    } else if (streak < 5) {
+      // console.log('Adding 2');
+      score += 2
+    } else if (streak < 7) {
+      // console.log('Adding 3');
+      score += 3
+    } else if (streak < 9) {
+      // console.log('Adding 5');
+      score += 5
+    } else if (streak < 11) {
+      // console.log('Adding 8');
+      score += 8
+    } else if (streak < 13) {
+      // console.log('Adding 13');
+      score += 13
+    } else if (streak < 15) {
+      // console.log('Adding 21');
+      score += 21
+    } else if (streak < 17) {
+      // console.log('Adding 34');
+      score += 34
+    } else if (streak < 19) {
+      // console.log('Adding 55');
+      score += 55
+    } else if (streak < 21) {
+      // console.log('Adding 89');
+      score += 89
+    } else if (streak >= 21) {
+      // console.log('Adding 144');
+      score += 144
+    }
+    // console.log('This is the new score: ', score);
+    axios.put('http://localhost:3000/habits/add', { "_id": id, "score": score })
+      .then((res) => {
+        console.log(res.data);
+        this.getHabits();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
   habitSubmit(event) {
     event.preventDefault();
     var n = this.state.createValue;
     axios.post('http://localhost:3000/habits', { name: n })
       .then((res) => {
         console.log(res.data);
+        this.getHabits();
       })
       .catch((err) => {
         console.log(err);
@@ -75,7 +128,7 @@ class App extends React.Component {
         <div className="rightbox">
           <Create createValue={this.state.createValue} changeInput={this.changeInput} habitSubmit={this.habitSubmit} />
 
-          <Tiles habits={this.state.habits} deleteHabit={this.deleteHabit} />
+          <Tiles habits={this.state.habits} deleteHabit={this.deleteHabit} addScore={this.addScore} />
 
         </div>
 

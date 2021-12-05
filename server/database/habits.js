@@ -51,6 +51,7 @@ let updateHabit = (data) => {
         results.highestStreak = results.streak;
       }
       results.save();
+      console.log('Score updated to: ', results.score);
     }
   });
 }
