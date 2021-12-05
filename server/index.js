@@ -7,12 +7,16 @@ const db = require('./database');
 const habits = require('./database/habits.js');
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../public')));
+// app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static('public'));
+// var cors = require('cors');
+// app.use(cors({ origin: true, credentials: true }));
 
 
 // Accounts
 app.get('/', (req, res) => {
-  res.send('Get Request Recieved')
+  console.log('Start GET Request');
+  res.send('Welcome to Hygieia API');
 })
 
 app.get('/accounts', (req, res) => {

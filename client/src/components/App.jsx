@@ -1,5 +1,6 @@
 // This is the primary component of the react app Test/
 import React from 'react';
+import axios from 'axios';
 import Create from './habitspage/Create.jsx';
 import Tiles from './habitspage/Tiles.jsx';
 
@@ -17,6 +18,17 @@ class App extends React.Component {
 
   componentDidMount() {
     console.log('Component Mounted');
+    this.getHabits();
+  }
+
+  getHabits() {
+    axios.get('http://localhost:3000/habits')
+      .then((res) => {
+        console.log("This is the response from the axios get request", res);
+      })
+      .catch((err) => {
+        console.log('There was an error', err);
+      });
   }
 
   habitSubmit(event) {
