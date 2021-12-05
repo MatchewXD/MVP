@@ -9,13 +9,22 @@ const Tiles = ({ habits, deleteHabit, addScore }) => {
     return (
       <div className="tile" id={habit._id} key={habit._id} score={habit.score} streak={habit.streak} >
         <h4>{habit.name}</h4>
-        <span onClick={addScore} >Did you perform this habit today?</span>
-        <p>Habit Score: {habit.score}</p>
-        <p>Streak: {habit.streak} </p>
-        <p>Highest Streak: {habit.highestStreak} </p>
-        <span onClick={test} >View Entries </span>
-        <span onClick={test} >Update </span>
-        <span onClick={deleteHabit} >Delete </span>
+
+        <div className="buttonstreak">
+          <span onClick={addScore} >Did you perform this habit today?</span>
+          <p>Streak: {habit.streak} </p>
+        </div>
+
+        <div className="habitscore">
+          <p>Habit Score: {habit.score}</p>
+          <p>Highest Streak: {habit.highestStreak} </p>
+        </div>
+
+        <div className="tilebuttons">
+          <span onClick={test} >View Entries </span>
+          <span onClick={test} >Update </span>
+          <span onClick={deleteHabit} >Delete </span>
+        </div>
       </div>
     );
   });
