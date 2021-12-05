@@ -35,9 +35,9 @@ class App extends React.Component {
   }
 
   addScore(event) {
-    var id = event.target.parentElement.id;
-    var score = Number(event.target.parentElement.attributes.score.value);
-    var streak = Number(event.target.parentElement.attributes.streak.value);
+    var id = event.target.parentElement.parentElement.id;
+    var score = Number(event.target.parentElement.parentElement.attributes.score.value);
+    var streak = Number(event.target.parentElement.parentElement.attributes.streak.value);
     // console.log(`The score is: ${score}\nThe id is: ${id}\nThe streak is: ${streak}`);
     // console.log(typeof (score), typeof (streak));
     if (streak < 3) {
@@ -105,7 +105,7 @@ class App extends React.Component {
   deleteHabit(event) {
     console.log('Delete was clicked');
     // console.log(event.target.parentElement.id);
-    var id = event.target.parentElement.id;
+    var id = event.target.parentElement.parentElement.id;
     console.log(id);
     axios.delete('http://localhost:3000/habits', { data: { "_id": id } })
       .then((res) => {
