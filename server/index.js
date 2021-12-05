@@ -7,10 +7,10 @@ const db = require('./database');
 const habits = require('./database/habits.js');
 
 app.use(express.json());
-// app.use(express.static(path.join(__dirname, '../public')));
-app.use(express.static('public'));
-// var cors = require('cors');
-// app.use(cors({ origin: true, credentials: true }));
+app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static('../public/index.html'));
+var cors = require('cors');
+app.use(cors({ origin: true, credentials: true }));
 
 
 // Accounts
@@ -65,10 +65,15 @@ app.put('/habits', (req, res) => {
   res.send('Update Request Recieved');
 });
 
+app.put('/habits/add', (req, res) => {
+  // console.log('Add Request Recieved');
+  habits.updateHabit(req.body);
+  res.send('Add Request Recieved');
+});
+
 app.delete('/habits', (req, res) => {
-  console.log("Delete Requet Recieved");
-  habits.remove(req.body._id);
-  res.send('Delete Request Recieved');
+  console.log("Delete Requet Recieved, id: ", req.body._id);
+  habits.remove(req.body._id, req, res);
 });
 
 app.listen(port, () => {

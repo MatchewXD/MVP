@@ -8,12 +8,14 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      createValue: ''
+      createValue: '',
+      habits: [],
     };
 
     // Bind
     this.changeInput = this.changeInput.bind(this);
     this.habitSubmit = this.habitSubmit.bind(this);
+    this.deleteHabit = this.deleteHabit.bind(this);
   }
 
   componentDidMount() {
@@ -24,7 +26,7 @@ class App extends React.Component {
   getHabits() {
     axios.get('http://localhost:3000/habits')
       .then((res) => {
-        console.log("This is the response from the axios get request", res);
+        this.setState({ habits: res.data })
       })
       .catch((err) => {
         console.log('There was an error', err);
@@ -33,11 +35,33 @@ class App extends React.Component {
 
   habitSubmit(event) {
     event.preventDefault();
-    console.log('Create Habit was Clicked!');
+    var n = this.state.createValue;
+    axios.post('http://localhost:3000/habits', { name: n })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   changeInput(event) {
     this.setState({ createValue: event.target.value });
+  }
+
+  deleteHabit(event) {
+    console.log('Delete was clicked');
+    // console.log(event.target.parentElement.id);
+    var id = event.target.parentElement.id;
+    console.log(id);
+    axios.delete('http://localhost:3000/habits', { data: { "_id": id } })
+      .then((res) => {
+        console.log(res.data);
+        this.getHabits();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   render() {
@@ -51,30 +75,8 @@ class App extends React.Component {
         <div className="rightbox">
           <Create createValue={this.state.createValue} changeInput={this.changeInput} habitSubmit={this.habitSubmit} />
 
-          {/* <div className="tileholder">
-            <div className="tile">
-              <h4>Working Out</h4>
-              <button type="button">Did you perform this habit Today?</button>
-              <p>Habit Score: 360</p>
-              <p>Streak: 93</p>
-              <button type="button">View Entries</button>
-            </div>
-            <div className="tile">
-              <h4>Sleep</h4>
-              <button type="button">Did you perform this habit Today?</button>
-              <p>Habit Score: 609</p>
-              <p>Streak: 63</p>
-              <button type="button">View Entries</button>
-            </div>
-            <div className="tile">
-              <h4>3 Meals</h4>
-              <button type="button">Did you perform this habit Today?</button>
-              <p>Habit Score: 963</p>
-              <p>Streak: 390</p>
-              <button type="button">View Entries</button>
-            </div>
-          </div> */}
-          <Tiles />
+          <Tiles habits={this.state.habits} deleteHabit={this.deleteHabit} />
+
         </div>
 
 

@@ -6,10 +6,10 @@ const Habit = db.Habit;
 // Use this to save new data points to the mongo database
 let save = (data) => {
   var name = data.name;
-  var score = data.score;
-  var streak = data.streak;
-  var hStreak = data.highestStreak;
-  var entries = data.entries;
+  var score = data.score || 0;
+  var streak = data.streak || 0;
+  var hStreak = data.highestStreak || 0;
+  var entries = data.entries || "";
   const habit = new Habit({ 'name': name, 'score': score, 'streak': streak, 'highestStreak': hStreak, 'entries': entries });
   habit.save();
 }
@@ -33,19 +33,36 @@ let update = (data) => {
       results.name = data.name ? data.name : results.name;
       results.score = data.score ? data.score : results.score;
       results.streak = data.streak ? data.streak : results.streak;
-      results.highestStreak = data.hStreak ? data.hStreak : results.highestStreak;
+      results.highestStreak = data.highestStreak ? data.highestStreak : results.highestStreak;
       results.entries = data.entries ? data.entries : results.entries;
       results.save();
     }
   });
 }
 
-let remove = (id) => {
+let updateHabit = (data) => {
+  Habit.findById(data._id, (err, results) => {
+    if (err) {
+      console.log(err);
+    } else {
+      results.score = data.score;
+      results.streak += 1;
+      if (results.highestStreak < results.streak) {
+        results.highestStreak = results.streak;
+      }
+      results.save();
+    }
+  });
+}
+
+let remove = (id, req, res) => {
+  console.log(id);
   Habit.deleteOne({ _id: id }, (err, _) => {
     if (err) {
       console.log(err);
     } else {
-      console.log('The account has been deleted');
+      console.log('The Habit has been deleted\n', _);
+      res.send('The Habit has been deleted');
     }
   });
 }
@@ -54,5 +71,6 @@ module.exports = {
   save: save,
   get: get,
   update: update,
+  updateHabit: updateHabit,
   remove: remove
 }
